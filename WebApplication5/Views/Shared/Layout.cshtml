@@ -1,0 +1,256 @@
+﻿@using WebApplication5.scripts;
+@{
+    Layout = null;
+    var db = new BookContext();
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Book Store</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#03a6f3">
+    <link rel="stylesheet" href="~/Content/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/Content/css/styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3"><a href="~/Home/Index" class="web-url">www.bookstore.com</a></div>
+                    <div class="col-md-6">
+                        @*<h5>Free Shipping Over $99 + 3 Free Samples With Every Order</h5>*@
+                    </div>
+                    <div class="col-md-3">
+                        <div >
+                            @if (Session["KhachHang"] != null)
+                            {
+                                var tk = Session["KhachHang"] as WebApplication5.Models.KhachHang;
+                                if (tk.LoaiKH != null)
+                                {
+                                  <h2>Hello @StringExtension.opimizeName(tk.HoTen, 7)</h2>
+                                }
+                            }
+                           
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main-menu">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="navbar-brand" href="~/Home/Index"><img src="~/Content/images/logo.png" alt="logo"></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ml-auto" style="margin-left:150px">
+                            <li class="navbar-item active">
+                                <a href="~/TheLoai/Index" class="nav-link">Categories</a>
+                            </li>
+                            <li class="navbar-item active">
+                                <a href="~/HomeTacGia/Index" class="nav-link">Authors</a>
+                            </li>
+                            <li class="navbar-item active">
+                                <a href="~/HomeNXB/Index" class="nav-link">Publishers</a>
+                            </li>
+                            <li class="navbar-item active">
+                                <a href="~/Log/LichSu" class="nav-link">History</a>
+                            </li>
+                            @if (Session["KhachHang"] != null)
+                            {
+                                var tk = Session["KhachHang"] as WebApplication5.Models.KhachHang;
+                                if (tk.LoaiKH == "Khách Hàng")
+                                {
+
+                                    <li class="navbar-item active">
+                                        <a href="~/DangXuat/Index" class="nav-link">Log Out</a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="navbar-item active">
+                                        <a href="~/KhachHang/AdIndex" class="nav-link">Admin</a>
+                                    </li>
+                                    <li class="navbar-item active">
+                                        <a href="~/DangXuat/Index" class="nav-link">Log Out</a>
+                                    </li>
+
+                                }
+                            }
+                            else
+                            {
+                                <li class="navbar-item active">
+                                    <a href="~/DangNhap/Index" class="nav-link">Login</a>
+                                </li>}
+                        </ul>
+                        @if (Session["KhachHang"] != null)
+                        {
+                            var tk = Session["KhachHang"] as WebApplication5.Models.KhachHang;
+
+                            var hd = db.HoaDon.Where(i => i.DaThanhToan == false && i.MaKH == tk.MaKH).FirstOrDefault();
+                            if (hd != null)
+                            {
+                                var listCTHD = db.ChiTietHoaDon.Where(i => i.MaDonHang == hd.MaDonHang).ToList();
+                                int sl = 0;
+                                foreach (var item in listCTHD)
+                                {
+                                    sl = sl + item.SoLuong;
+                                }
+                                <div class="cart my-2 my-lg-0">
+                                    <a href="~/GioHang/Index">
+                                        <span>
+                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                        </span>
+                                        <span class="quntity">@sl</span>
+                                    </a>
+                                </div>}
+                            else
+                            {
+                                <div class="cart my-2 my-lg-0">
+                                    <a href="~/GioHang/Index">
+                                        <span>
+                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                        </span>
+                                        <span class="quntity">0</span>
+                                    </a>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="cart my-2 my-lg-0">
+                                <a href="~/GioHang/Index">
+                                    <span>
+                                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                    </span>
+                                    <span class="quntity">0</span>
+                                </a>
+                            </div>
+                        }
+                        @*<div class="cart my-2 my-lg-0">
+            <a href="~/GioHang/Index">
+                <span>
+                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                </span>
+                <span class="quntity">0</span>
+            </a>
+        </div>*@
+                            <form method="post" action="~/Home/TimKiemSach" class="form-inline my-2 my-lg-0">
+                                <input class="form-control mr-sm-2" type="search" name="tenSach" placeholder="Search here..." aria-label="Search">
+                                <span>
+                                    <button type="submit" style="border-radius:4px;font-size:12px;">Tìm</button>
+                                    @*<a onclick="this.form.submit()"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>*@
+                                </span>
+                                @*<a onclick="this.form.submit()"><span class="fa fa-search"></span></a>*@
+                            </form>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+
+    @RenderBody();
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="address">
+                        <h4>Our Address</h4>
+                        <h6>
+                            The BookStore 20 Cộng Hòa, Phường 12, Quận Tân Bình, TP HCM
+                        </h6>
+                        <h6>Call : 0987 580 319</h6>
+                        <h6>Email : info@bookstore.com</h6>
+                    </div>
+                    <div class="timing">
+                        <h4>Timing</h4>
+                        <h6>Mon - Fri: 7am - 10pm</h6>
+                        <h6>​​Saturday: 8am - 10pm</h6>
+                        <h6>​Sunday: 8am - 11pm</h6>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="navigation">
+                        <h4>Navigation</h4>
+                        <ul>
+                            <li><a href="~/Home/Index">Home</a></li>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms</a></li>
+                            <li><a href="~/SachMoi/GetListXemNhieu">Products</a></li>
+                        </ul>
+                    </div>
+                    <div class="navigation">
+                        <h4>Help</h4>
+                        <ul>
+                            <li><a href="#">Shipping & Returns</a></li>
+                            <li><a href="#">Privacy</a></li>
+                            <li><a href="#">FAQ’s</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form">
+                        <h3>Quick Contact us</h3>
+                        <h6>
+                            We are now offering some good discount
+                            on selected books go and shop them
+                        </h6>
+                        <form>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input placeholder="Name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="email" placeholder="Email" required>
+                                </div>
+                                <div class="col-md-12">
+                                    <textarea placeholder="Messege"></textarea>
+                                </div>
+                                <div class="col-md-12">
+                                    <button class="btn black">Alright, Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copy-right">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>(C) 2020. All Rights Reserved. BookStore Wordpress Theme</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="share align-middle">
+                            <span class="fb"><i class="fa fa-facebook-official"></i></span>
+                            <span class="instagram"><i class="fa fa-instagram"></i></span>
+                            <span class="twitter"><i class="fa fa-twitter"></i></span>
+                            <span class="pinterest"><i class="fa fa-pinterest"></i></span>
+                            <span class="google"><i class="fa fa-google-plus"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/Content/js/owl.carousel.min.js"></script>
+    <script src="~/Content/js/custom.js"></script>
+    <script src="~/Content/js/jquery.min.js"></script>
+    <script src="~/Content/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+@if (ViewBag.Err != null)
+{
+    <script type="text/javascript" charset="utf-8">
+        window.onload = function () {
+        alert("@ViewBag.Err");
+    }
+    </script>
+}
+<div class="breadcrumb">
+    <div class="container">
+        <a class="breadcrumb-item" href="~/Home/Index">Home</a>
+        <span class="breadcrumb-item active">Register</span>
+    </div>
+</div>
+<section class="static about-sec">
+    <div class="container">
+        <h1>My Account / Register</h1>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's printer took a galley of type and scrambled it to make a type specimen book. It has survived not only fiveLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem </p>
+        <div class="form">
+            <form method="post" action="~/DangKy/Index">
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="text" name="name" placeholder="What should we call you? (7 character)" required>
+                        <span class="required-star">*</span>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="date" name="dob" placeholder="Date of Birth" required>
+                        <span class="required-star">*</span>
+                    </div>
+                    <div class="col-md-4">
+                        <select style="width: 100%;
+        height: 50px;
+        padding-left: 20px;
+        margin-bottom: 35px;" name="gender">
+                            <option value="Nam" selected>Nam</option>
+                            <option value="Nu" selected>Nữ</option>
+                        </select>
+                        <span class="required-star">*</span>
+                    </div>
+                    <div class="col-md-12">
+                        <input type="text" name="address" placeholder="Address" required>
+                        <span class="required-star">*</span>
+                    </div>
+                    <div class="col-md-4">
+                        <input name="username" placeholder="Enter User Name" required>
+                        <span class="required-star">*</span>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="password" name="pass" placeholder="Password" required>
+                        <span class="required-star">*</span>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="password" name="repass" placeholder="Repeat Password" required>
+                        <span class="required-star">*</span>
+                    </div>
+                    <div class="col-lg-8 col-md-12">
+                        <button type="submit" class="btn black">Register</button>
+                        <h5>Already have an account? <a href="~/DangNhap/Index">Login here</a></h5>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
